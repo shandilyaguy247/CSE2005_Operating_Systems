@@ -12,4 +12,4 @@ There are 5 Lab Tasks (Keeps changing every year but broadly this is how it goes
 In each folder, you will find the code to a particular problem. (I've covered almost of the problems that you will be asked to perform in the lab)
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests and any corrections to the codes are welcome. For major changes, please open an issue first to discuss what you would like to change.
