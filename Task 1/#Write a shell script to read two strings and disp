@@ -1,0 +1,17 @@
+#Write a shell script to read two strings and display whether it is equal, not equal, null strings.
+
+#!/bin/bash
+
+echo Enter string 1:
+read a
+echo Enter string 2:
+read b
+if [ -z $a -o -z $b]
+then
+	echo "One of the strings is null"
+elif [ $a = $b]
+then
+	echo "Same strings"
+else
+	echo "Different Strings"
+done

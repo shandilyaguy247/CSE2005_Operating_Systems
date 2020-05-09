@@ -1,0 +1,7 @@
+#Write a shell script to display all files in the /home/YourLoginName subdirectory as well as display the type of all files.
+
+if [ -d "S@'" ];
+then
+	find . -maxdepth 1 -type f
+	echo "Number of files is $(find "$@" - type f | wc - l)"
+fi

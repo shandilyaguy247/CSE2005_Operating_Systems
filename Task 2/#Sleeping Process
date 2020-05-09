@@ -1,0 +1,14 @@
+#Sleeping Process
+
+#include<stdio.h>
+#include<sys/types.h>
+#include<unistd.h>
+int main()
+{
+printf("\nProcess created: ");
+printf("\nProcess entering into sleeping state...");
+sleep(5);
+printf("\nProcess exit from sleeping state");
+printf("\nprocess terminated");
+return 0;
+}

@@ -1,0 +1,21 @@
+#Orphan Process
+
+#include<stdio.h>
+void main()
+{
+int id;
+id=fork();
+if(id==0)
+{
+printf("Childprocess has started: %d\n ",getpid());
+printf("Parent-Id of the child: %d\n",getppid());
+printf("child prints: Hello :\n ");
+sleep(10);
+printf("child prints: Bye:\n");
+printf("new Parent-Id of the child: %d\n",getppid());
+}
+else
+{
+printf("parent has started: %d\n",getpid());
+printf("Parent process end..");
+}}

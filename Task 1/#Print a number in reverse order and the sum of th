@@ -1,0 +1,22 @@
+#Print a number in reverse order and the sum of the individual digits
+
+#!/bin/bash
+echo "enter the number"
+read n
+m=n
+s=0
+while [ $n - gt 0]
+do
+t = `expr $n - gt 0`
+s = `expr $s + $t`
+n = `expr $n/10`
+done
+echo "The sum of the digits is $s"
+s=0
+while [$m -gt 0]
+do
+r = `expr $n % 10`
+n = `expr $s / 10`
+s = `expr $s \* 10 + $r`
+done
+echo "The reverse of the given number is $s"
