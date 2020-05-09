@@ -1,0 +1,51 @@
+#Write a program to create a thread and let the thread check whether the given number is prime or not.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+
+void *prime( void *ptr );
+
+int main()
+{
+     pthread_t thread1;
+     const char *message1 = "Start of Thread";
+     int  iret1;
+
+     iret1 = pthread_create( &thread1, NULL, prime, (void*) message1);
+     if(iret1)
+     {
+         fprintf(stderr,"Error - pthread_create() return code: %d\n",iret1);
+         exit(EXIT_FAILURE);
+     }
+     pthread_join( thread1, NULL);
+
+     exit(EXIT_SUCCESS);
+return 0;
+
+}
+
+void *prime( void *ptr )
+{
+     char *message;
+    message = (char *) ptr;
+     printf("%s \n", message);
+    int n, i, flag = 0;
+    printf("Enter a positive integer: ");
+    scanf("%d",&n);
+
+    for(i=2; i<=n/2; ++i)
+    {
+        // condition for nonprime number
+        if(n%i==0)
+        {
+            flag=1;
+            break;
+        }
+    }
+
+    if (flag==0)
+        printf("%d is a prime number.\n",n);
+    else
+        printf("%d is not a prime number.\n",n);
+}

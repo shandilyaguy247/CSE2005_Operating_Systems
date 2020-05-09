@@ -1,0 +1,12 @@
+#Write a shell script to swap two numbers without using 3rd variable.
+
+#!/bin/bash
+echo "enter first number"
+read a
+echo "enter second number"
+read b
+#swapping
+a=$((a+b))
+b=$((a-b))
+a=$((a-b))
+echo "the swapped values are a= $a and b= $b"

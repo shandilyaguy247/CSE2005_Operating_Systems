@@ -1,0 +1,108 @@
+#Semaphore
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<unistd.h>
+#include<sys/ipc.h>
+#include<sys/sem.h>
+#include<semaphore.h>
+
+//sem.c
+int main()
+{
+  int pid, shared_data=1;   //initializing the shared data
+  sem_t semvar;
+  int semid;               /* semid of semaphore set */
+  key_t key = 1234; /* key to pass to semget() */
+  int nsems = 1; /* nsems to pass to semget() */
+ semid=semget(key,nsems,IPC_CREAT|0666);    //create asemaphore
+  sem_init(&semvar, 1, 1);  //initialize the semaphore variable value as 1
+
+  if (semid<0)  //generate error in case of creation failure
+  {
+    perror("Semaphore creation failed ");
+  }
+
+  if ((pid = fork()) < 0)  //create a child process
+  {
+    perror("fork");
+    return 1;
+  }
+  else if(pid==0)  //code for child process
+  {
+    sem_wait(&semvar);  //check the entry condition for critical section to access shared data
+    printf("IN CHILD PROCESS :\n");
+    shared_data++;   //access shared data
+    printf("value of shared variable =%d",shared_data);
+    sem_post(&semvar);  //exit from the critical section, euivalent to signal() function
+    return 0;
+  }
+
+//code for parent program
+  sem_wait(&semvar); // parent entry to critical section, wait() function
+  printf("IN PARENT PROCESS :\n");
+  shared_data--;  // parent access shared data
+  printf("value of shared variable =%d",shared_data);
+  sem_post(&semvar);  //parent exit from critical section, signal() function
+  return 0;
+}
+
+Compilation help:
+$gcc sem.c -pthread -o sem.out
+$./sem.out
+
+
+
+/*
+
+SEM_INIT(3)               Linux Programmer's Manual              SEM_INIT(3)
+NAME         top
+       sem_init - initialize an unnamed semaphore
+SYNOPSIS         top
+       #include <semaphore.h>
+
+       int sem_init(sem_t *sem, int pshared, unsigned int value);
+
+       Link with -pthread.
+DESCRIPTION         top
+       sem_init() initializes the unnamed semaphore at the address pointed
+       to by sem.  The value argument specifies the initial value for the
+       semaphore.
+
+       The pshared argument indicates whether this semaphore is to be shared
+       between the threads of a process, or between processes.
+
+       If pshared has the value 0, then the semaphore is shared between the
+       threads of a process, and should be located at some address that is
+       visible to all threads (e.g., a global variable, or a variable
+       allocated dynamically on the heap).
+
+       If pshared is nonzero, then the semaphore is shared between
+       processes, and should be located in a region of shared memory (see
+       shm_open(3), mmap(2), and shmget(2)).  (Since a child created by
+       fork(2) inherits its parent's memory mappings, it can also access the
+       semaphore.)  Any process that can access the shared memory region can
+       operate on the semaphore using sem_post(3), sem_wait(3), and so on.
+
+       Initializing a semaphore that has already been initialized results in
+       undefined behavior.
+RETURN VALUE         top
+       sem_init() returns 0 on success; on error, -1 is returned, and errno
+       is set to indicate the error.
+ERRORS         top
+       EINVAL value exceeds SEM_VALUE_MAX.
+
+       ENOSYS pshared is nonzero, but the system does not support process-
+              shared semaphores (see sem_overview(7)).
+ATTRIBUTES         top
+       For an explanation of the terms used in this section, see
+       attributes(7).
+
+       ┌───────────┬───────────────┬─────────┐
+       │Interface  │ Attribute     │ Value   │
+       ├───────────┼───────────────┼─────────┤
+       │sem_init() │ Thread safety │ MT-Safe │
+       └───────────┴───────────────┴─────────┘
+CONFORMING TO         top
+       POSIX.1-2001.
+*/

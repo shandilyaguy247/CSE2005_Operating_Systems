@@ -1,0 +1,47 @@
+#FCFS Performance Test
+
+#include<iostream>
+#include<stdio.h>
+
+using namespace std;
+
+int main()
+{
+    char pn[10][10];
+    int arr[10],bur[10],star[10],finish[10],tat[10],wt[10],i,n;
+    int totwt=0,tottat=0;
+    cout<<"Enter the number of processes:";
+    cin>>n;
+    for(i=0;i<n;i++)
+    {
+        cout<<"Enter the Process Name, Arrival Time & Burst Time:";
+        cin>>pn[i]>>arr[i]>>bur[i];
+    }
+    for(i=0;i<n;i++)
+    {
+        if(i==0)
+        {
+            star[i]=arr[i];
+            wt[i]=star[i]-arr[i];
+            finish[i]=star[i]+bur[i];
+            tat[i]=finish[i]-arr[i];
+        }
+        else
+        {
+            star[i]=finish[i-1];
+            wt[i]=star[i]-arr[i];
+            finish[i]=star[i]+bur[i];
+            tat[i]=finish[i]-arr[i];
+        }
+    }
+    cout<<"\nPName   Arrtime   Burtime    Start     TAT              Finish";
+    for(i=0;i<n;i++)
+    {
+        cout<<endl<<pn[i]<<"\t"<<arr[i]<<"\t  "<<bur[i]<<"\t     "<<star[i]<<"\t\t"<<tat[i]<<"\t\t"<<finish[i];
+        totwt+=wt[i];
+        tottat+=tat[i];
+    }
+    cout<<"\nAverage Waiting time: "<<(float)totwt/n;
+    cout<<"\nAverage Turn Around Time:%f"<<(float)tottat/n;
+}
+
